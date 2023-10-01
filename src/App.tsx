@@ -1,23 +1,28 @@
-import { CubeIcon } from '@heroicons/react/20/solid'
-import './App.css'
+import React from 'react';
+import { BrowserRouter as Router } from 'react-router-dom';
+import Routes from './routes';
+import Navbar from './components/Navbar';
+import './App.css';
 
 function App() {
   return (
-    <div>
-      <div className='mx-auto max-w-7xl sm:px-6 lg:px-8 mt-32'>
-        <div className='overflow-hidden rounded-lg bg-white shadow h-96'>
-          <div className='px-4 py-5 sm:p-6'>
-            <div className='flex items-center'>
-              <CubeIcon className='h-16 w-16 inline-block' />
-              <h1 className='text-4xl font-semibold text-gray-900 mb-4 ml-4 mt-4'>
-                Memory lane
-              </h1>
+    <Router>
+      <Navbar />
+      <div>
+        <div className='mx-auto max-w-7xl sm:p-6 lg:p-8' >
+          <div className='h-max rounded-lg bg-white shadow h-96'>
+            <div className='px-4 py-5 sm:p-6'>
+              <div className='mx-auto max-w-7xl sm:px-6 lg:px-8 mt-4'>
+                <Routes />
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-  )
+    </Router>
+
+  );
 }
 
-export default App
+export default App;
+
