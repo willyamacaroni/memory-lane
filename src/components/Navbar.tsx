@@ -14,7 +14,7 @@ const Navbar: React.FC = () => {
             </Link>
           </div>
           <div className="space-x-4">
-            <Link to="/create" className="text-white">New memory</Link>
+            <Link to="/lane/create" className="text-white">New lane</Link>
           </div>
         </div>
       </div>

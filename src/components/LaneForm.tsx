@@ -2,29 +2,26 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 
-const MemoryForm: React.FC = () => {
+const LaneForm: React.FC = () => {
   const navigate = useNavigate();
   const { id } = useParams<{ id?: string }>();
-  const { memoryid } = useParams<{ memoryid?: string }>();
   const [formData, setFormData] = useState({
     name: '',
     description: '',
-    timestamp: '',
     image: '',
   });
   const [previewSrc, setPreviewSrc] = useState('');
   useEffect(() => {
-    console.log(memoryid)
-    if (memoryid) {
-      fetch(`http://localhost:4001/memories/${memoryid}`)
+    if (id) {
+      fetch(`http://localhost:4001/lanes/${id}`)
         .then(response => response.json())
-        .then(data => setFormData(data.memory))
+        .then(data => setFormData(data.lane))
         .catch(error => {
           console.error('Error fetching memory:', error);
           navigate('/');  // Redirect to home page on error
         });
     }
-  }, [memoryid, history]);
+  }, [id, history]);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = event.target;
@@ -40,15 +37,14 @@ const MemoryForm: React.FC = () => {
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
 
-    const lane_id = id !== undefined ? +id : null;
-
     const payload = {
-      lane_id: lane_id,
       ...formData,
     };
 
-    const url = memoryid ? `http://127.0.0.1:4001/memories/${memoryid}` : 'http://127.0.0.1:4001/memories';
-    const method = memoryid ? 'PUT' : 'POST';
+    const url = id ? `http://127.0.0.1:4001/lanes/${id}` : 'http://127.0.0.1:4001/lanes';
+    console.log(url)
+    console.log(payload)
+    const method = id ? 'PUT' : 'POST';
 
     try {
       const response = await fetch(url, {
@@ -60,13 +56,12 @@ const MemoryForm: React.FC = () => {
       });
 
       if (!response.ok) {
-        const errorMessage = `Failed to ${memoryid ? 'update' : 'create'} memory: ${response.statusText}`;
+        const errorMessage = `Failed to ${id ? 'update' : 'create'} memory: ${response.statusText}`;
         console.error(errorMessage);
       } else {
-        if (!memoryid) {
-          navigate('/lane/' + id);
-        } else {
-          navigate('/lane/' + id);
+        console.log('Memory', id ? 'updated' : 'created', 'successfully!');
+        if (!id) {
+          navigate('/');
         }
       }
     } catch (error) {
@@ -74,7 +69,7 @@ const MemoryForm: React.FC = () => {
     }
   }; return (
     <div>
-      <h1 className="my-8 text-4xl"> Creating memory </h1>
+      <h1 className="my-8 text-4xl"> Creating lane </h1>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
           <label className="block text-sm font-medium text-gray-700" htmlFor="name">Name</label>
@@ -96,17 +91,6 @@ const MemoryForm: React.FC = () => {
             onChange={handleInputChange}
             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
             rows={4}
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-medium text-gray-700" htmlFor="timestamp">Timestamp</label>
-          <input
-            type="datetime-local"
-            id="timestamp"
-            name="timestamp"
-            value={formData.timestamp}
-            onChange={handleInputChange}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
           />
         </div>
         <div>
@@ -137,5 +121,5 @@ const MemoryForm: React.FC = () => {
   );
 };
 
-export default MemoryForm;
+export default LaneForm;
 
